@@ -8,23 +8,23 @@ FROM cromo/devkitarm:r46
 # Install tools we'll use for the python build
 RUN apt-get update && \
   apt-get -y install \
-  build-essential \
-  cmake \
-  curl \
-  git \
-  golang \
-  libfreetype6 \
-  libjpeg-dev \
-  libssl-dev  \
-  libxi6 \
-  libxxf86vm1 \
-  python3 \
-  python3-pip \
-  zlib1g-dev && \
+  build-essential=11.7 \
+  cmake=3.0.2-1+deb8u1 \
+  curl=7.38.0-4+deb8u16 \
+  git=1:2.1.4-2.1+deb8u8 \
+  golang=2:1.3.3-1+deb8u2 \
+  libfreetype6=2.5.2-3+deb8u4 \
+  libjpeg-dev=1:1.3.1-12+deb8u2 \
+  libssl-dev=1.0.1t-1+deb8u12  \
+  libxi6=2:1.7.4-1+deb8u1 \
+  libxxf86vm1=1:1.1.3-1+b1 \
+  python3=3.4.2-2 \
+  python3-pip=1.5.6-5 \
+  zlib1g-dev=1:1.2.8.dfsg-2+deb8u1 && \
   rm -rf /var/lib/apt/lists/*
 
 # Install the libraries that the dsgx-converter relies on
-RUN pip3 install docopt
+RUN pip3 install docopt==0.6.2
 RUN pip3 install euclid3
 RUN pip3 install Pillow==4.3.0
 
