@@ -26,7 +26,7 @@ RUN apt-get update && \
 # Install the libraries that the dsgx-converter relies on
 RUN pip3 install docopt
 RUN pip3 install euclid3
-RUN pip3 install Pillow
+RUN pip3 install Pillow==4.3.0
 
 # Install Blender, so that it can perform object exports
 # directly as part of the build
