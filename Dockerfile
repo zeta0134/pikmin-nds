@@ -26,11 +26,11 @@ RUN apt-get update && \
 # Install the libraries that the dsgx-converter relies on
 RUN pip3 install docopt
 RUN pip3 install euclid3
-RUN pip3 install Pillow
+RUN pip3 install Pillow==4.3.0
 
 # Install Blender, so that it can perform object exports
 # directly as part of the build
-RUN curl -O http://download.blender.org/release/Blender2.74/blender-2.74-linux-glibc211-x86_64.tar.bz2 && \
+RUN curl -O https://download.blender.org/release/Blender2.74/blender-2.74-linux-glibc211-x86_64.tar.bz2 && \
   tar xf blender-2.74-linux-glibc211-x86_64.tar.bz2 && \
   mv blender-2.74-linux-glibc211-x86_64 /opt/ && \
   rm blender-2.74-linux-glibc211-x86_64.tar.bz2 && \
