@@ -21,6 +21,7 @@
 *.app
 
 build
+buildtest
 *.elf
 *.nds
 

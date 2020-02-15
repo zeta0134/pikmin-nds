@@ -232,6 +232,23 @@ void GameLoop(PikminGame& game) {
   }
 }
 
+#ifdef BUILD_TESTS
+#include "tests/testing_framework.h"
+
+int main() {
+  debug::Log("Hello tests!");
+
+  init_test_console();
+  run_all_tests();
+
+  while(true) {
+    // Die forever
+    swiWaitForVBlank();
+  }
+}
+
+#else 
+
 int main() {
   MultipassRenderer* renderer = new MultipassRenderer();
   PikminGame* game = new PikminGame(*renderer);
@@ -241,3 +258,5 @@ int main() {
   GameLoop(*game);
   return 0;
 }
+
+#endif
