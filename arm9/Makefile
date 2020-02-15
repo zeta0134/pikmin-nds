@@ -17,7 +17,7 @@ include $(DEVKITARM)/ds_rules
 BUILD		:=	build
 NAMESPACES := ai debug entities physics render
 
-ifeq ($(TARGET), pikmin-nds_test)
+ifeq ($(TARGET), pikmin-nds-test)
 BUILD := buildtest
 NAMESPACES +=  tests
 endif
@@ -45,7 +45,7 @@ CFLAGS	:=	-g -Wall -O2\
 
 CFLAGS	+=	$(INCLUDE) -DARM9
 
-ifeq ($(TARGET), pikmin-nds_test)
+ifeq ($(TARGET), pikmin-nds-test)
 CFLAGS +=  -DBUILD_TESTS
 endif
 
