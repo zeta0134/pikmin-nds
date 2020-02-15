@@ -12,8 +12,9 @@ void init_test_console() {
 #define TEST(test) do { \
     bool result = test(); \
     std::printf("%s %s\n", result ? "ok" : "not ok", #test); \
-    nocashMessage((result ? "ok" : "not ok")); \
+    nocashMessage((result ? "ok " : "not ok ")); \
     nocashMessage(#test); \
+    nocashMessage("\n"); \
   } while(false);
 
 
