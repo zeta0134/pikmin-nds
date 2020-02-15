@@ -18,6 +18,7 @@ BUILD		:=	build
 NAMESPACES := ai debug entities physics render
 
 ifeq ($(TARGET), pikmin-nds_test)
+BUILD := testbuild
 NAMESPACES +=  tests
 endif
 
@@ -25,7 +26,7 @@ NAMESPACE_SOURCES := $(addprefix source/,$(NAMESPACES))
 SOURCES		:=	gfx source $(NAMESPACE_SOURCES)
 # The .. here causes the project root to be a valid include path, for explicit
 # including of files from the ARM9 side when required.
-INCLUDES	:=	include source build ..
+INCLUDES	:=	include source $(BUILD) ..
 DATA		:= data
 BLEND := art
 TEXTURES := $(CURDIR)/art/textures
@@ -127,7 +128,7 @@ export AUDIOFILES	:=	$(foreach dir,$(notdir $(wildcard $(SOUND)/*.*)),$(CURDIR)/
 .PHONY: $(BUILD) clean clean-nitrofs clean-actors test
 
 #---------------------------------------------------------------------------------
-$(BUILD): $(NITROFILES) $(addprefix $(CURDIR)/$(BUILD)/, $(BINOFILES))
+$(BUILD): $(NITROFILES) $(addprefix $(CURDIR)/$(BUILD)/, $(BINOFILES)) $(CURDIR)/$(BUILD)/soundbank.h
 	@[ -d $@ ] || mkdir -p $@
 	@$(MAKE) --no-print-directory -C $(BUILD) -f $(CURDIR)/Makefile
 
