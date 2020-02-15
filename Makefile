@@ -16,16 +16,21 @@ ifneq ($(strip $(NITRODATA)),)
 	export NITRO_FILES	:=	$(CURDIR)/$(NITRODATA)
 endif
 
-.PHONY: arm7/$(TARGET).elf arm9/$(TARGET).elf clean clean-nitrofs clean-actors
+.PHONY: arm7/$(TARGET).elf arm9/$(TARGET).elf arm9/$(TARGET)_test.elf clean clean-nitrofs clean-actors
 
 #---------------------------------------------------------------------------------
 # main targets
 #---------------------------------------------------------------------------------
 all: $(TARGET).nds
+test: $(TARGET)_test.nds
 
 #---------------------------------------------------------------------------------
 $(TARGET).nds	:	arm7/$(TARGET).elf arm9/$(TARGET).elf
 	$(DEVKITARM)/bin/ndstool	-c $(TARGET).nds -7 arm7/$(TARGET).elf -9 arm9/$(TARGET).elf -d $(NITRO_FILES)
+
+#---------------------------------------------------------------------------------
+$(TARGET)_test.nds	:	arm7/$(TARGET).elf arm9/$(TARGET)_test.elf
+	$(DEVKITARM)/bin/ndstool	-c $(TARGET)_test.nds -7 arm7/$(TARGET).elf -9 arm9/$(TARGET)_test.elf -d $(NITRO_FILES)
 
 #---------------------------------------------------------------------------------
 arm7/$(TARGET).elf:
@@ -34,6 +39,10 @@ arm7/$(TARGET).elf:
 #---------------------------------------------------------------------------------
 arm9/$(TARGET).elf:
 	$(MAKE) -C arm9
+
+arm9/$(TARGET)_test.elf:
+	TARGET=$(TARGET)_test $(MAKE) -C arm9 test
+
 
 #---------------------------------------------------------------------------------
 clean:

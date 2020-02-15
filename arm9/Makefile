@@ -16,6 +16,11 @@ include $(DEVKITARM)/ds_rules
 #---------------------------------------------------------------------------------
 BUILD		:=	build
 NAMESPACES := ai debug entities physics render
+
+ifeq ($(TARGET), pikmin-nds_test)
+NAMESPACES +=  tests
+endif
+
 NAMESPACE_SOURCES := $(addprefix source/,$(NAMESPACES))
 SOURCES		:=	gfx source $(NAMESPACE_SOURCES)
 # The .. here causes the project root to be a valid include path, for explicit
@@ -38,6 +43,11 @@ CFLAGS	:=	-g -Wall -O2\
 			$(ARCH)
 
 CFLAGS	+=	$(INCLUDE) -DARM9
+
+ifeq ($(TARGET), pikmin-nds_test)
+CFLAGS +=  -DBUILD_TESTS
+endif
+
 CXXFLAGS	:=	$(CFLAGS) -fno-rtti -fno-exceptions -std=c++14
 
 ASFLAGS	:=	-g $(ARCH) -march=armv5te -mtune=arm946e-s
@@ -63,7 +73,6 @@ LIBDIRS	:=	$(LIBNDS)
 #---------------------------------------------------------------------------------
 ifneq ($(BUILD),$(notdir $(CURDIR)))
 #---------------------------------------------------------------------------------
-
 export ARM9ELF	:=	$(CURDIR)/$(TARGET).elf
 export DEPSDIR := $(CURDIR)/$(BUILD)
 
@@ -115,12 +124,14 @@ export NITROFILES := $(addprefix $(NITRODIR)/heightmaps/,$(notdir $(HEIGHTFILES:
 
 export AUDIOFILES	:=	$(foreach dir,$(notdir $(wildcard $(SOUND)/*.*)),$(CURDIR)/$(SOUND)/$(dir))
 
-.PHONY: $(BUILD) clean clean-nitrofs clean-actors
+.PHONY: $(BUILD) clean clean-nitrofs clean-actors test
 
 #---------------------------------------------------------------------------------
 $(BUILD): $(NITROFILES) $(addprefix $(CURDIR)/$(BUILD)/, $(BINOFILES))
 	@[ -d $@ ] || mkdir -p $@
 	@$(MAKE) --no-print-directory -C $(BUILD) -f $(CURDIR)/Makefile
+
+test: $(BUILD)
 
 #---------------------------------------------------------------------------------
 clean:
@@ -223,12 +234,18 @@ $(CURDIR)/$(BUILD)/%.bin.o $(CURDIR)/$(BUILD)/%_bin.h:	%.bin
 #---------------------------------------------------------------------------------
 else
 
+.PHONY: test
+
 #---------------------------------------------------------------------------------
 # main target
 #---------------------------------------------------------------------------------
 $(ARM9ELF) :	$(OFILES)
+	@echo $(TARGET)
 	@echo linking $(notdir $@)
 	@$(LD)  $(LDFLAGS) $(OFILES) $(LIBPATHS) $(LIBS) -o $@
+
+
+test: $(ARM9ELF)
 
 #%.dsgx.o %_dsgx.h:	%.dsgx
 #---------------------------------------------------------------------------------
