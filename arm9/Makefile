@@ -18,7 +18,7 @@ BUILD		:=	build
 NAMESPACES := ai debug entities physics render
 
 ifeq ($(TARGET), pikmin-nds_test)
-BUILD := testbuild
+BUILD := buildtest
 NAMESPACES +=  tests
 endif
 
@@ -138,6 +138,7 @@ test: $(BUILD)
 clean:
 	@echo clean ...
 	@rm -fr $(BUILD) *.elf *.nds* *.bin $(NITRODIR)
+	@rm -fr buildtest
 
 clean-nitrofs:
 	@rm -rf $(NITRODIR)
