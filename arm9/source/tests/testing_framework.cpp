@@ -9,14 +9,6 @@ void init_test_console() {
 	std::printf("\x1b[39m");
 }
 
-#define TEST(test) do { \
-    bool result = test(); \
-    std::printf("%s %s\n", result ? "ok" : "not ok", #test); \
-    nocashMessage((result ? "ok " : "not ok ")); \
-    nocashMessage(#test); \
-    nocashMessage("\n"); \
-  } while(false);
-
 
 bool tests_exist_at_all() {
 	return true;
