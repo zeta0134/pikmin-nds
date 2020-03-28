@@ -4,35 +4,35 @@
   "states": {
     "idle": {
       "on": {
-        "SEEDS_INCREASED": {
+        "NUTRIENTS_CONSUMED": {
           "target": "reproducing",
-          "actions": "updateSeedCounter"
+          "actions": "addSeeds"
         }
       }
     },
     "reproducing": {
-      "initial": "bounce",
+      "initial": "bouncing",
       "on": {
-        "SEEDS_INCREASED": {
+        "NUTRIENTS_CONSUMED": {
           "target": "reproducing",
-          "actions": "updateSeedCounter"
+          "actions": "addSeeds"
         }
       },
       "states": {
-        "bounce": {
+        "bouncing": {
           "on": {
-            "LAST_FRAME": "windUp"
+            "ANIMATION_ENDED": "windingUp"
           }
         },
-        "windUp": {
+        "windingUp": {
           "on": {
-            "LAST_FRAME": {
+            "ANIMATION_ENDED": {
               "target": "moreSeedsLeft",
               "actions": "ejectSeeds"
             }
           }
         },
-        "ejectSeeds": {
+        "dispersingSeeds": {
           "after": {
             "667": {
               "target": "moreSeedsLeft",
@@ -44,18 +44,18 @@
           "on": {
             "": [
               {
-                "target": "ejectSeeds",
+                "target": "dispersingSeeds",
                 "cond": "moreSeedsLeft"
               },
               {
-                "target": "windDown"
+                "target": "windingDown"
               }
             ]
           }
         },
-        "windDown": {
+        "windingDown": {
           "on": {
-            "LAST_FRAME": "done"
+            "ANIMATION_ENDED": "done"
           }
         },
         "done": {
