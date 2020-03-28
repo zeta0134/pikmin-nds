@@ -1,0 +1,33 @@
+{
+  "id": "onion",
+  "initial": "idle",
+  "states": {
+    "idle": {
+      "on": {
+        "SEEDS_INCREASED": "bounce"
+      }
+    },
+    "bounce": {
+      "on": {
+        "SEEDS_INCREASED": "bounce"
+      }
+    },
+    "windUp": {
+      "on": {
+        "SEEDS_INCREASED": "bounce"
+      }
+    },
+    "windDown": {
+      "on": {
+        "SEEDS_INCREASED": "bounce"
+      }
+    },
+    "ejectSeeds": {
+      "on": {
+        "SEEDS_INCREASED": "bounce",
+        "NO_MORE_SEEDS": "windDown",
+        "EVERY_40_FRAMES": "ejectSeeds"
+      }
+    }
+  }
+}
