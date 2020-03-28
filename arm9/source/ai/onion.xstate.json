@@ -5,50 +5,51 @@
     "idle": {
       "on": {
         "SEEDS_INCREASED": {
-          "target": "bounce",
+          "target": "reproducing",
           "actions": "updateSeedCounter"
         }
       }
     },
-    "bounce": {
+    "reproducing": {
+      "initial": "bounce",
       "on": {
         "SEEDS_INCREASED": {
-          "target": "bounce",
+          "target": "reproducing",
           "actions": "updateSeedCounter"
         }
-      }
-    },
-    "windUp": {
-      "on": {
-        "SEEDS_INCREASED": {
-          "target": "bounce",
-          "actions": "updateSeedCounter"
-        }
-      }
-    },
-    "windDown": {
-      "on": {
-        "SEEDS_INCREASED": {
-          "target": "bounce",
-          "actions": "updateSeedCounter"
-        },
-        "LAST_FRAME": "idle"
-      }
-    },
-    "ejectSeeds": {
-      "on": {
-        "SEEDS_INCREASED": {
-          "target": "bounce",
-          "actions": "updateSeedCounter"
-        },
-        "NO_MORE_SEEDS": "windDown"
       },
-      "after": {
-        "667": {
-          "target": "ejectSeeds",
-          "actions": "ejectSeeds"
+      "states": {
+        "bounce": {
+          "on": {
+            "LAST_FRAME": "windUp"
+          }
+        },
+        "windUp": {
+          "on": {
+            "LAST_FRAME": "ejectSeeds"
+          }
+        },
+        "ejectSeeds": {
+          "on": {
+            "NO_MORE_SEEDS": "windDown"
+          },
+          "after": {
+            "667": {
+              "target": "ejectSeeds",
+              "actions": "ejectSeeds"
+            }
+          }
+        },
+        "windDown": {
+          "on": {
+            "LAST_FRAME": "done"
+          }
+        },
+        "done": {
+          "type": "final"
         }
-      }
+      },
+      "onDone": "idle"
     }
   }
 }
