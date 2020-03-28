@@ -31,7 +31,8 @@
         "SEEDS_INCREASED": {
           "target": "bounce",
           "actions": "updateSeedCounter"
-        }
+        },
+        "LAST_FRAME": "idle"
       }
     },
     "ejectSeeds": {
