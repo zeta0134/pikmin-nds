@@ -26,18 +26,31 @@
         },
         "windUp": {
           "on": {
-            "LAST_FRAME": "ejectSeeds"
+            "LAST_FRAME": {
+              "target": "moreSeedsLeft",
+              "actions": "ejectSeeds"
+            }
           }
         },
         "ejectSeeds": {
-          "on": {
-            "NO_MORE_SEEDS": "windDown"
-          },
           "after": {
             "667": {
-              "target": "ejectSeeds",
+              "target": "moreSeedsLeft",
               "actions": "ejectSeeds"
             }
+          }
+        },
+        "moreSeedsLeft": {
+          "on": {
+            "": [
+              {
+                "target": "ejectSeeds",
+                "cond": "moreSeedsLeft"
+              },
+              {
+                "target": "windDown"
+              }
+            ]
           }
         },
         "windDown": {
