@@ -1,0 +1,56 @@
+{
+  "id": "camera",
+  "type": "parallel",
+  "states": {
+    "movement": {
+      "initial": "track",
+      "states": {
+        "track": {
+          "on": {
+            "FOLLOW": "follow"
+          }
+        },
+        "follow": {
+          "on": {
+            "TRACK": "track"
+          }
+        }
+      }
+    },
+    "tilt": {
+      "initial": "low",
+      "states": {
+        "low": {
+          "on": {
+            "CHANGE_TILT": "high"
+          }
+        },
+        "high": {
+          "on": {
+            "CHANGE_TILT": "low"
+          }
+        }
+      }
+    },
+    "zoom": {
+      "initial": "mid",
+      "states": {
+        "near": {
+          "on": {
+            "CHANGE_ZOOM": "mid"
+          }
+        },
+        "mid": {
+          "on": {
+            "CHANGE_ZOOM": "far"
+          }
+        },
+        "far": {
+          "on": {
+            "CHANGE_ZOOM": "near"
+          }
+        }
+      }
+    }
+  }
+}
