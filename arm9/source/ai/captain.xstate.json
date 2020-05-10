@@ -1,0 +1,89 @@
+{
+  "id": "captain",
+  "type": "parallel",
+  "states": {
+    "movement": {
+      "initial": "standing",
+      "states": {
+        "standing": {
+          "on": {
+            "DPAD_ACTIVE": {
+              "target": "running",
+              "action": "move"
+            }
+          }
+        },
+        "running": {
+          "on": {
+            "DPAD_INACTIVE": {
+              "target": "standing",
+              "action": "stopMove"
+            }
+          }
+        }
+      }
+    },
+    "always": {
+      "initial": "any",
+      "states": {
+        "any": {
+          "on": {
+            "DISMISS": {
+              "target": "any",
+              "cond": "haveSquad",
+              "action": "dismiss"
+            },
+            "WHISTLE": {
+              "target": "any",
+              "action": "whistle"
+            }
+          }
+        }
+      }
+    },
+    "hands": {
+      "initial": "empty",
+      "states": {
+        "empty": {
+          "on": {
+            "ACTION_DOWN": {
+              "target": "holdingPikmin",
+              "cond": "nearPikmin",
+              "action": "grab"
+            }
+          }
+        },
+        "holdingPikmin": {
+          "on": {
+            "SELECT_RED": {
+              "target": "holdingPikmin",
+              "action": "switchToRedPikmin"
+            },
+            "SELECT_YELLOW": {
+              "target": "holdingPikmin",
+              "action": "switchToYellowPikmin"
+            },
+            "SELECT_BLUE": {
+              "target": "holdingPikmin",
+              "action": "switchToBluePikmin"
+            },
+            "ACTION_RELEASE": {
+              "target": "throw",
+              "action": "throw"
+            }
+          }
+        },
+        "throw": {
+          "on": {
+            "ACTION_DOWN": {
+              "target": "holdingPikmin",
+              "cond": "nearPikmin",
+              "action": "grab"
+            },
+            "LAST_FRAME": "empty"
+          }
+        }
+      }
+    }
+  }
+}
