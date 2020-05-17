@@ -1,0 +1,39 @@
+{
+  "id": "pelletPosy",
+  "initial": "alive",
+  "states": {
+    "alive": {
+      "initial": "soakingUpSun",
+      "on": {
+        "OUT_OF_HEALTH": {
+          "target": "deathThroes",
+          "action": "die"
+        }
+      },
+      "states": {
+        "soakingUpSun": {
+          "on": {
+            "HIT": "recoiling"
+          }
+        },
+        "recoiling": {
+          "on": {
+            "LAST_FRAME": {
+              "target": "soakingUpSun",
+              "action": "updateHealth"
+            }
+          }
+        }
+      }
+    },
+    "deathThroes": {
+      "on": {
+        "LAST_FRAME": {
+          "target": "dead",
+          "action": "leaveCorpse"
+        }
+      }
+    },
+    "dead": {}
+  }
+}
