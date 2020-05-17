@@ -1,0 +1,35 @@
+{
+  "id": "fireSpout",
+  "initial": "alive",
+  "states": {
+    "alive": {
+      "initial": "off",
+      "on": {
+        "OUT_OF_HEALTH": {
+          "target": "dead",
+          "action": "die"
+        }
+      },
+      "states": {
+        "off": {
+          "on": {
+            "TIMER_EXPIRED": {
+              "target": "on",
+              "action": "turnOn"
+            }
+          }
+        },
+        "on": {
+          "activities": "spawnFire",
+          "on": {
+            "TIMER_EXPIRED": {
+              "target": "off",
+              "action": "turnOff"
+            }
+          }
+        }
+      }
+    },
+    "dead": {}
+  }
+}
