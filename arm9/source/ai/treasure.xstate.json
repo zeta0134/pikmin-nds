@@ -1,0 +1,40 @@
+{
+  "id": "treasure",
+  "initial": "restingOnGround",
+  "states": {
+    "restingOnGround": {
+      "activity": "updateNotMoving",
+      "on": {
+        "LIFTERS_READY": {
+          "target": "beingCarried",
+          "action": "setTarget"
+        }
+      }
+    },
+    "beingCarried": {
+      "activity": "moveTowardTarget",
+      "on": {
+        "LIFTER_ADDED": {
+          "target": "restingOnGround",
+          "action": "clearDestination"
+        },
+        "DESTINATION_REACHED": {
+          "target": "beingCollected",
+          "action": "prepareForRetrieval"
+        }
+      }
+    },
+    "beingCollected": {
+      "activity": "rise",
+      "on": {
+        "LAST_FRAME": {
+          "target": "collected",
+          "action": "collect"
+        }
+      }
+    },
+    "collected": {
+      "type": "final"
+    }
+  }
+}
