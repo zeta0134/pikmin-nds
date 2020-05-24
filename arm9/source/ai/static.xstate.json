@@ -1,0 +1,9 @@
+{
+  "id": "static",
+  "initial": "static",
+  "states": {
+    "static": {
+      "type": "final"
+    }
+  }
+}
