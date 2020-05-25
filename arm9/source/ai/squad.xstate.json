@@ -1,0 +1,9 @@
+{
+  "id": "squad",
+  "initial": "followCaptain",
+  "states": {
+    "followCaptain": {
+      "activity": "updateShape"
+    },
+  }
+}
