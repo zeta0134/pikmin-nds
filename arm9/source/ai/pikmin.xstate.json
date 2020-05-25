@@ -1,0 +1,198 @@
+{
+  "id": "pikmin",
+  "initial": "idle",
+  "states": {
+    "idle": {
+      "activity": "idle",
+      "on": {
+        "HIT_ONION_FOOT": {
+          "action": "beginClimbingOnion",
+          "target": "climbIntoOnion"
+        },
+        "TOO_FAR_FROM_TARGET": "targeting",
+        "HIT_WHISTLE": {
+          "action": "joinSquad",
+          "target": "idle"
+        },
+        "NEW_PARENT": {
+          "action": "saveParent",
+          "target": "grabbed"
+        },
+        "HIT_TARGET": {
+          "action": "saveTarget",
+          "target": "chasing"
+        }
+      }
+    },
+    "grabbed": {
+      "activity": "followParent",
+      "on": {
+        "LEFT_PARENT": "thrown"
+      }
+    },
+    "thrown": {
+      "activity": "spawnThrowParticles",
+      "on": {
+        "LANDED": {
+          "action": "stopMoving",
+          "target": "idle"
+        }
+      }
+    },
+    "targeting": {
+      "activity": "runToTarget",
+      "on": {
+        "HIT_ONION_FOOT": {
+          "action": "beginClimbingOnion",
+          "target": "climbIntoOnion"
+        },
+        "HIT_TARGET": {
+          "action": "clearTargetAndStop",
+          "target": "idle"
+        },
+        "UNABLE_TO_REACH_TARGET": {
+          "action": "clearTargetAndStop",
+          "target": "idle"
+        },
+        "NEW_PARENT": {
+          "action": "saveParent",
+          "target": "grabbed"
+        }
+      }
+    },
+    "chasing": {
+      "activity": "chaseTarget",
+      "on": {
+        "UNABLE_TO_REACH_TARGET": {
+          "action": "clearTargetAndStop",
+          "target": "idle"
+        },
+        "TARGET_INVALID": {
+          "action": "clearTargetAndStop",
+          "target": "idle"
+        },
+        "HIT_WHISTLE": {
+          "action": "joinSquad",
+          "target": "idle"
+        },
+        "HIT_ATTACKABLE": {
+          "action": "setAttackTarget",
+          "target": "standingAttack"
+        },
+        "HIT_TREASURE": {
+          "action": "addToTreasure",
+          "target": "liftTreasure"
+        }
+      }
+    },
+    "standingAttack": {
+      "entry": "aim",
+      "on": {
+        "TARGET_INVALID": {
+          "action": "clearTargetAndStop",
+          "target": "idle"
+        },
+        "LAST_FRAME": {
+          "action": "damageTarget",
+          "target": "jump"
+        },
+        "HIT_WHISTLE": {
+          "action": "joinSquad",
+          "target": "idle"
+        }
+      }
+    },
+    "jump": {
+      "entry": "jumpTowardTarget",
+      "on": {
+        "TARGET_INVALID": {
+          "action": "clearTargetAndStop",
+          "target": "idle"
+        },
+        "HIT_WHISTLE": {
+          "action": "joinSquad",
+          "target": "idle"
+        },
+        "LANDED": {
+          "action": "stopMoving",
+          "target": "chasing"
+        }
+      }
+    },
+    "climbIntoOnion": {
+      "type": "final",
+      "on": {
+        "LAST_FRAME": {
+          "action": "enterOnion",
+          "taget": "climbIntoOnion"
+        }
+      }
+    },
+    "slideDownFromOnion": {
+      "on": {
+        "HIT_WHISTLE": {
+          "action": "whistleOffOnion",
+          "target": "idle"
+        },
+        "LAST_FRAME": {
+          "action": "hopOffFoot",
+          "target": "idle"
+        }
+      }
+    },
+    "liftTreasure": {
+      "on": {
+        "HIT_WHISTLE": {
+          "action": "whistleOffTreasure",
+          "target": "idle"
+        },
+        "TREASURE_MOVING": "carryTreasure",
+        "TREASURE_INVALID": {
+          "action": "removeFromTreasure",
+          "target": "idle"
+        }
+      }
+    },
+    "carryTreasure": {
+      "on": {
+        "HIT_WHISTLE": {
+          "action": "whistleOffTreasure",
+          "target": "idle"
+        },
+        "TREASURE_STOPPED": "liftTreasure",
+        "TREASURE_INVALID": {
+          "action": "removeFromTreasure",
+          "target": "idle"
+        }
+      }
+    },
+    "seed": {
+      "activity": "floatDown",
+      "on": {
+        "LANDED": {
+          "action": "plantSeed",
+          "target": "growing"
+        }
+      }
+    },
+    "growing": {
+      "on": {
+        "LAST_FRAME": "sprout"
+      }
+    },
+    "sprout": {
+      "on": {
+        "PLUCKED": "plucked",
+        "HIT_WHISTLE": {
+          "action": "pluckIntoSquad",
+          "target": "plucked"
+        }
+      }
+    },
+    "plucked": {
+      "on": {
+        "LAST_FRAME": "idle"
+      }
+    }
+  }
+}
