@@ -1,197 +1,160 @@
 {
   "id": "pikmin",
-  "initial": "idle",
+  "initial": "selectSpawnMode",
   "states": {
-    "idle": {
-      "activity": "idle",
+    "selectSpawnMode": {
       "on": {
-        "HIT_ONION_FOOT": {
-          "action": "beginClimbingOnion",
-          "target": "climbIntoOnion"
+        "": [
+          {"cond": "deployingFromOnion", "target": "deployingFromOnion"},
+          {"cond": "dispersedAsSeed", "target": "vegetative"},
+          {"cond": "planted", "target": "vegetative.planted"},
+          {"cond": "wild", "target": "independent"}
+        ]
+      }
+    },
+    "deployingFromOnion": {
+      "on": {
+        "WHISTLED": "squadMember",
+        "LAST_FRAME": "squadMember"
+      }
+    },
+    "vegetative": {
+      "initial": "dispersing",
+      "states": {
+        "dispersing": {
+          "on": {
+            "LANDED": "sprouting"
+          }
         },
-        "TOO_FAR_FROM_TARGET": "targeting",
-        "HIT_WHISTLE": {
-          "action": "joinSquad",
-          "target": "idle"
+        "sprouting": {
+          "on": {
+            "LAST_FRAME": "planted"
+          }
         },
-        "NEW_PARENT": {
-          "action": "saveParent",
-          "target": "grabbed"
+        "planted": {
+          "on": {
+            "PULLED_ON": "plucking",
+            "WHISTLED": {
+              "cond": "withPluckophone",
+              "target": "springFromTheGround"
+            }
+          },
         },
-        "HIT_TARGET": {
-          "action": "saveTarget",
-          "target": "chasing"
+        "plucking": {
+          "on": {
+            "LAST_FRAME": "#pikmin.squadMember"
+          }
+        },
+        "springFromTheGround": {
+          "on": {
+            "LAST_FRAME": "#pikmin.squadMember"
+          }
+        },
+      },
+    },
+    "independent": {
+      "initial": "loitering",
+      "on": {
+        "WHISTLED": "squadMember"
+      },
+      "states": {
+        "loitering": {
+          "on": {
+            "NEAR_THREAT": "hunting",
+            "NEAR_TREASURE": "looting"
+          }
+        },
+        "hunting": {
+          "initial": "closingDistance",
+          "on": {
+            "THREAT_NEUTRALIZED": "loitering",
+            "UNABLE_TO_REACH_TARGET": "loitering"
+          },
+          "states": {
+            "closingDistance": {
+              "on": {
+                "THREAT_IN_RANGE": "aiming"
+              }
+            },
+            "aiming": {
+              "entry": "aim",
+              "on": {
+                "LAST_FRAME": "lunge"
+              }
+            },
+            "lunge": {
+              "entry": "lungeAttack",
+              "on": {
+                "LANDED": "closingDistance"
+              }
+            }
+          }
+        },
+        "looting": {
+          "initial": "descendingOnTreasure",
+          "on": {
+            "TREASURE_INVALID": "loitering"
+          },
+          "states": {
+            "descendingOnTreasure": {
+              "on": {
+                "TOUCHED_TREASURE": {
+                  "cond": "carrySlotAvailable",
+                  "target": "lift"
+                }
+              }
+            },
+            "lift": {
+              "on": {
+                "TREASURE_MOVING": "carry"
+              }
+            },
+            "carry": {
+              "on": {
+                "TREASURE_STOPPED": "lift"
+              }
+            }
+          }
+        },
+      }
+    },
+    "squadMember": {
+      "initial": "marching",
+      "states": {
+        "marching": {
+          "on": {
+            "GRABBED": "grabbed",
+            "PUT_AWAY": "#pikmin.retiringToOnion"
+          }
+        },
+        "grabbed": {
+          "on": {
+            "THROWN": "sailingThroughTheAir"
+          }
+        },
+        "sailingThroughTheAir": {
+          "on": {
+            "LANDED": "#pikmin.independent"
+          }
         }
       }
     },
-    "grabbed": {
-      "activity": "followParent",
-      "on": {
-        "LEFT_PARENT": "thrown"
-      }
-    },
-    "thrown": {
-      "activity": "spawnThrowParticles",
-      "on": {
-        "LANDED": {
-          "action": "stopMoving",
-          "target": "idle"
+    "retiringToOnion": {
+      "initial": "movingToOnionFoot",
+      "states": {
+        "movingToOnionFoot": {
+          "on": {
+            "TOUCHED_ONION_FOOT": "climbOnionLeg"
+          }
+        },
+        "climbOnionLeg": {
+          "on": {
+            "REACHED_ONION_BODY": "climbIntoOnion"
+          }
+        },
+        "climbIntoOnion": {
+          "type": "final"
         }
-      }
-    },
-    "targeting": {
-      "activity": "runToTarget",
-      "on": {
-        "HIT_ONION_FOOT": {
-          "action": "beginClimbingOnion",
-          "target": "climbIntoOnion"
-        },
-        "HIT_TARGET": {
-          "action": "clearTargetAndStop",
-          "target": "idle"
-        },
-        "UNABLE_TO_REACH_TARGET": {
-          "action": "clearTargetAndStop",
-          "target": "idle"
-        },
-        "NEW_PARENT": {
-          "action": "saveParent",
-          "target": "grabbed"
-        }
-      }
-    },
-    "chasing": {
-      "activity": "chaseTarget",
-      "on": {
-        "UNABLE_TO_REACH_TARGET": {
-          "action": "clearTargetAndStop",
-          "target": "idle"
-        },
-        "TARGET_INVALID": {
-          "action": "clearTargetAndStop",
-          "target": "idle"
-        },
-        "HIT_WHISTLE": {
-          "action": "joinSquad",
-          "target": "idle"
-        },
-        "HIT_ATTACKABLE": {
-          "action": "setAttackTarget",
-          "target": "standingAttack"
-        },
-        "HIT_TREASURE": {
-          "action": "addToTreasure",
-          "target": "liftTreasure"
-        }
-      }
-    },
-    "standingAttack": {
-      "entry": "aim",
-      "on": {
-        "TARGET_INVALID": {
-          "action": "clearTargetAndStop",
-          "target": "idle"
-        },
-        "LAST_FRAME": {
-          "action": "damageTarget",
-          "target": "jump"
-        },
-        "HIT_WHISTLE": {
-          "action": "joinSquad",
-          "target": "idle"
-        }
-      }
-    },
-    "jump": {
-      "entry": "jumpTowardTarget",
-      "on": {
-        "TARGET_INVALID": {
-          "action": "clearTargetAndStop",
-          "target": "idle"
-        },
-        "HIT_WHISTLE": {
-          "action": "joinSquad",
-          "target": "idle"
-        },
-        "LANDED": {
-          "action": "stopMoving",
-          "target": "chasing"
-        }
-      }
-    },
-    "climbIntoOnion": {
-      "type": "final",
-      "on": {
-        "LAST_FRAME": {
-          "action": "enterOnion",
-          "taget": "climbIntoOnion"
-        }
-      }
-    },
-    "slideDownFromOnion": {
-      "on": {
-        "HIT_WHISTLE": {
-          "action": "whistleOffOnion",
-          "target": "idle"
-        },
-        "LAST_FRAME": {
-          "action": "hopOffFoot",
-          "target": "idle"
-        }
-      }
-    },
-    "liftTreasure": {
-      "on": {
-        "HIT_WHISTLE": {
-          "action": "whistleOffTreasure",
-          "target": "idle"
-        },
-        "TREASURE_MOVING": "carryTreasure",
-        "TREASURE_INVALID": {
-          "action": "removeFromTreasure",
-          "target": "idle"
-        }
-      }
-    },
-    "carryTreasure": {
-      "on": {
-        "HIT_WHISTLE": {
-          "action": "whistleOffTreasure",
-          "target": "idle"
-        },
-        "TREASURE_STOPPED": "liftTreasure",
-        "TREASURE_INVALID": {
-          "action": "removeFromTreasure",
-          "target": "idle"
-        }
-      }
-    },
-    "seed": {
-      "activity": "floatDown",
-      "on": {
-        "LANDED": {
-          "action": "plantSeed",
-          "target": "growing"
-        }
-      }
-    },
-    "growing": {
-      "on": {
-        "LAST_FRAME": "sprout"
-      }
-    },
-    "sprout": {
-      "on": {
-        "PLUCKED": "plucked",
-        "HIT_WHISTLE": {
-          "action": "pluckIntoSquad",
-          "target": "plucked"
-        }
-      }
-    },
-    "plucked": {
-      "on": {
-        "LAST_FRAME": "idle"
       }
     }
   }
